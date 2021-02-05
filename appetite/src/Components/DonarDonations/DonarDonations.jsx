@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import './DonarDonations.scss';
+import './DonarDonations.css';
 import axios from 'axios';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -77,8 +77,9 @@ function DonarDonations(props) {
             console.log("hiii");
             const data = await axios({
                 method: "get",
-                url: "http://127.0.0.1:8000/getdonoritems/"+details.email,
-                headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
+                url: "https://appetite3.herokuapp.com/getdonoritems/"+details.email,
+                // headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
+                headers:{"Authorization":"Token d27e2be02e4f641be9039972cf59497fbcb0fe9d"},
                 data: details,
                 responseType: "json"
             });
@@ -94,8 +95,8 @@ function DonarDonations(props) {
         try{
             const data =  await axios({
                 method:"delete",
-                url:"http://127.0.0.1:8000/deletedonoritem/"+id,
-                headers: { "Authorization":"Token adfe0edfc08a10144a7a0ff50177f271bfca3848"},
+                url:"https://appetite3.herokuapp.com/deletedonoritem/"+id,
+                headers: { "Authorization":"Token d27e2be02e4f641be9039972cf59497fbcb0fe9d"},
                 responseType:"json"
             })
             setondel((pre)=>!pre);

@@ -1,5 +1,5 @@
 import React from 'react';
-import './MainLandingPage.scss';
+import './MainLandingPage.css';
 import BackGroundg from '../../assets/background1.jpg';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';

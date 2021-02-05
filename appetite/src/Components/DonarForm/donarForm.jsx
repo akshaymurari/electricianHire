@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './donarForm.scss';
+import './donarForm.css';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,8 +35,8 @@ function DonarForm(props) {
             // console.log("hiii");
             const data = await axios({
                 method: "post",
-                url: "http://127.0.0.1:8000/donorexists/",
-                headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
+                url: "https://appetite3.herokuapp.com/donorexists/",
+                headers: { "Authorization": "Token d27e2be02e4f641be9039972cf59497fbcb0fe9d" },
                 data:details,
                 responseType: "json"
             });
@@ -78,9 +78,9 @@ function DonarForm(props) {
         try {
             const data = await axios({
                 method: "post",
-                url: "http://127.0.0.1:8000/savedonoritem/",
+                url: "https://appetite3.herokuapp.com/savedonoritem/",
                 data: info,
-                headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
+                headers: { "Authorization": "Token d27e2be02e4f641be9039972cf59497fbcb0fe9d" },
                 responseType: "json"
             })
             setDetails({
@@ -89,6 +89,7 @@ function DonarForm(props) {
                 address: "",
                 region: "Adilabad"
             });
+            H.push('/SuccessPage');
         }
         catch {
             H.push('/error');

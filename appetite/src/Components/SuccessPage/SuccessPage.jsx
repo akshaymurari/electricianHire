@@ -1,5 +1,5 @@
 import React from 'react';
-import './SuccessPage.scss'
+import './SuccessPage.css'
 
 function SuccessPage() {
     return (

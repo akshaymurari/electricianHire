@@ -6,8 +6,8 @@ import AcceptorPage from './Components/AcceptorPage/AcceptopPage.jsx';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import DonarDonations from './Components/DonarDonations/DonarDonations.jsx'
 import Signin from './Components/account/signin.jsx';
-import Signup from './/Components/account/signup.jsx';
-
+import Signup from './Components/account/signup.jsx';
+// import SuccessPage from './SuccessPage/SuccessPage.jsx';
 function error() {
   return (
     <div style={{
@@ -33,6 +33,7 @@ function App() {
           <Route path="/acceptorpage" exact component={AcceptorPage}></Route>
           <Route path="/signin" exact component={Signin}></Route>
           <Route path="/signup" exact component={Signup}></Route>
+          <Route path="/SuccessPage" exact component={SuccessPage}></Route>
           <Route path="*" component={error} />
           {/* <SuccessPage></SuccessPage>
           <DonarForm></DonarForm>

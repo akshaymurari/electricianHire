@@ -123,9 +123,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# CORS_ORIGIN_ALLOW_ALL = True
+
 
 CORS_ALLOWED_ORIGINS= [
     "https://determined-swartz-b7bdd1.netlify.app",
+    "https://determined-swartz-b7bdd1.netlify.app/acceptorpage",
     "http://127.0.0.1:3000",
-    "http://localhost:3000"
+    "http://localhost:3000",
 ]

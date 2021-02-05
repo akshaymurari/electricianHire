@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './AcceptopPage.scss';
+import './AcceptopPage.css';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 
@@ -17,11 +17,13 @@ function AcceptopPage() {
         try{
             const data = await axios({
                 method:"get",
-                url:"http://127.0.0.1:8000/ReceiveFood/"+acceptorRegion,
-                headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
+                url:"https://appetite3.herokuapp.com/ReceiveFood/"+acceptorRegion,
+                headers: { "Authorization": "Token d27e2be02e4f641be9039972cf59497fbcb0fe9d	" },
                 responseType: "json"
             });
+            console.log("hiiiiiiiiiiiiiiiiiii")
             setfooditems(data.data);
+            console.log(data);
         }
         catch{
         }
@@ -40,9 +42,9 @@ function AcceptopPage() {
         try{
             const data = await axios({
                 method:"get",
-                url:"http://127.0.0.1:8000/ReceiveFood/Adilabad?search="+search,
+                url:"https://appetite3.herokuapp.com/ReceiveFood/"+acceptorRegion+"?search="+search,
                 responseType:"json",
-                headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
+                headers: { "Authorization": "Token d27e2be02e4f641be9039972cf59497fbcb0fe9d	" },
             })
             setfooditems(data.data);
         }
