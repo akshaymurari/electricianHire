@@ -15,6 +15,12 @@ class Donors(models.Model):
     region = models.CharField(max_length=30,default=None)
     day = models.DateField(auto_now_add=True)
 
+class Request(models.Model):
+    phoneNo = models.CharField(max_length=11,default=None)
+    address = models.CharField(max_length=100,default=None)
+    region = models.CharField(max_length=30,default=None)
+    day = models.DateTimeField(auto_now_add=True)
+
 # class Receiver(models.Model):
 #     region = models.CharField(max_length=30,default=None)
     

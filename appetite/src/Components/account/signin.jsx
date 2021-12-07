@@ -52,8 +52,8 @@ function Signup(props) {
         try{
             const data = await axios({
                 method:"post",
-                url:"https://appetite3.herokuapp.com/donorexists/",
-                headers:{"Authorization":"Token d27e2be02e4f641be9039972cf59497fbcb0fe9d"},
+                url:"http://localhost:8000/donorexists/",
+                headers:{"Authorization":"Token adfe0edfc08a10144a7a0ff50177f271bfca3848"},
                 data:details,
                 responseType:"json"
             });

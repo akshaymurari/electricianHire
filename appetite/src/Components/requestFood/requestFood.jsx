@@ -1,135 +1,168 @@
 import React, { useState, useEffect } from 'react';
-import './donarForm.css';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import DonarDonations from '../DonarDonations/DonarDonations.jsx';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import { useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles({
-    donarToggleButtons: {
-        margin: "2rem 1rem",
-        padding: "11px",
-        backgroundColor: "#000000",
-        color: "#fff",
-        outline: "none",
-        border: "none",
-        background: "linear-gradient(142deg, rgba(198,230,107,1) 0%, rgba(80,192,246,1) 100%)",
-    },
-    donarToggleButtonsSelect: {
-        background: "#fff !important",
+    donarButton: {
+        background: "linear-gradient(142deg, rgba(140,230,107,1) 0%, rgba(230,231,16,1) 100%)",
+        border: "none !important",
+        outline: "none !important",
+        marginRight: "2rem !important",
+        padding: "1rem",
         color: "black",
+        fontWeight: "900"
+    },
+    acceptorButton: {
         outline: "none",
-        border: "4px red solid"
+        border: "4px rgba(140,230,107,1) solid !important",
+        marginLeft: "2rem",
+        padding: "1rem",
+        color: "black",
+        fontWeight: "900"
     }
 })
 
-function DonarForm(props) {
+
+function RequestFood() {
+    const classes = useStyles();
+    const [acceptorRegion, setacceptorRegion] = useState("Hyderabad");
+    const [search, setsearch] = useState("");
+    const [filteredFoodItems, setfilteredFoodItems] = useState([]);
     const H = useHistory();
-    useEffect(async () => {
-        try {
-            const details = JSON.parse(localStorage.getItem('details'));
-            // console.log(details);
-            // console.log("hiii");
-            const data = await axios({
-                method: "post",
-                url: "http://localhost:8000/donorexists/",
-                headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
-                data:details,
-                responseType: "json"
-            });
-            if (data.data["msg"]) {
-                // localStorage.setItem("details",details);
-                // H.push('/donarform');
-            }
-            else {
-                H.push("/error");
-            }
-        }
-        catch {
-            H.push("/error");
-        }
-    },[]);
-    const [alignment, setAlignment] = useState('left');
     const [selectedButton, setselectedButton] = useState({
         one: true,
         two: false,
     });
-    const handleToogleButton = () => {
-        setselectedButton({
-            one: !selectedButton.one,
-            two: !selectedButton.two,
-        })
+    const onChangeHandler = (e) => {
+        console.log(e.target.value);
+        setacceptorRegion(e.target.value);
     }
-    const handleChange = (event, newAlignment) => {
-        setAlignment(newAlignment);
-    };
+    const [fooditems, setfooditems] = useState([
+    ]);
     const [details, setDetails] = useState({
         phoneNo: "",
-        foodType: "",
         address: "",
         region: "Adilabad"
     });
     const submitFood = async () => {
-        const info = { ...details, email: JSON.parse(localStorage.getItem('details')).email };
+        const info = { ...details };
         console.log(info);
         try {
             const data = await axios({
                 method: "post",
-                url: "http://localhost:8000/savedonoritem/",
+                url: "http://localhost:8000/createrequest/",
                 data: info,
-                headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
                 responseType: "json"
             })
             setDetails({
                 phoneNo: "",
-                foodType: "",
                 address: "",
                 region: "Adilabad"
             });
-            H.push('/SuccessPage');
+            alert("request successful")
         }
         catch {
             H.push('/error');
         }
     }
-    const classes = useStyles(props);
-    return (
-        <Router>
-            <div style={{
-                textAlign: "center",
+    useEffect(async () => {
+        try{
+            const data = await axios({
+                method:"get",
+                url:"http://localhost:8000/RequestFood/"+acceptorRegion,
+            });
+            setfooditems(data.data);
+            console.log(data);
+        }
+        catch{
+        }
+    },[acceptorRegion]);
+    useEffect(async ()=>{
+        try{
+            const data = await axios({
+                method:"get",
+                url:"http://localhost:8000/RequestFood/"+acceptorRegion+"?search="+search,
+                responseType:"json",
+            })
+            setfooditems(data.data);
+        }
+        catch{
 
-            }}>
-                <h1 style={{
-                    fontFamily: "'Abril Fatface', cursive",
-                    letterSpacing: "0px !important",
-                    fontSize: "4rem",
-                    wordSpacing: "4px",
-                    background: "linear-gradient(142deg, rgba(198,230,107,1) 0%, rgba(80,192,246,1) 100%)",
-                    padding: "2rem",
-                    color: "#000000"
-                }}>Make a Donation and help us Fight Hunger</h1>
-                <ToggleButtonGroup size="small" value={alignment} exclusive onChange={handleChange}>
-                    <Link></Link>
-                    <ToggleButton onClick={() => {
-                        H.push('/donarform');
-                    }} selected={selectedButton.one} value="center" className={`${classes.donarToggleButtons} ${selectedButton.one ? "donarToggleButtonsSelect" : ""}`}>
-                        Give a Donations
-                    </ToggleButton>
-                    <ToggleButton onClick={() => {
-                        H.push('/DonarDonations');
-                    }} selected={selectedButton.two} value="right" className={classes.donarToggleButtons}>
-                        Your Donations
-                    </ToggleButton>
-                    <ToggleButton onClick={() => {
-                        localStorage.removeItem('details');
-                        H.push('/');
-                    }} selected={selectedButton.two} value="right" className={classes.donarToggleButtons}>
-                        logout
-                    </ToggleButton>
-                </ToggleButtonGroup>
+        }
+        console.log(search);
+    }, [search])
+    const [requestfood,setrequestfood] = useState(false);
+
+    return (
+        <div style={{
+            textAlign: "center"
+        }}>
+            <label for="selectCity" style={{
+                fontSize: "1.5rem",
+                fontWeight: "500",
+                margin: "auto",
+                marginTop: "1rem"
+            }}>Select the District:</label>
+            <select class="form-control" value={acceptorRegion} id="exampleFormControlSelect1" name="selectCity" style={{
+                maxWidth: "50rem",
+                margin: "auto",
+                marginTop: "2rem",
+                marginBottom: "4rem"
+            }} onChange={(e)=>{onChangeHandler(e)}}>
+                <option value="Adilabad">Adilabad</option>
+                <option value="Bhadradri Kothagudem">Bhadradri Kothagudem</option>
+                <option value="Hyderabad" selected>Hyderabad</option>
+                <option value="Jagitial">Jagitial</option>
+                <option value="Jangaon">Jangaon</option>
+                <option value="Jayashankar Bhupalpally">Jayashankar Bhupalpally</option>
+                <option value="Jogulamba Gadwal">Jogulamba Gadwal</option>
+                <option value="Kamareddy">Kamareddy</option>
+                <option value="Karimnagar">Karimnagar</option>
+                <option value="Khammam">Khammam</option>
+                <option value="Komaram Bheem">Komaram Bheem</option>
+                <option value="Mahabubabad">Mahabubabad</option>
+                <option value="Mahabubnagar">Mahabubnagar</option>
+                <option value="Mancherial">Mancherial</option>
+                <option value="Medak">Medak</option>
+                <option value="Medchal–Malkajgiri">Medchal–Malkajgiri</option>
+                <option value="Mulugu">Mulugu</option>
+                <option value="Nagarkurnool">Nagarkurnool</option>
+                <option value="Narayanpet">Narayanpet</option>
+                <option value="Nalgonda">Nalgonda</option>
+                <option value="Nirmal">Nirmal</option>
+                <option value="Nizamabad">Nizamabad</option>
+                <option value="Peddapalli">Peddapalli</option>
+                <option value="Rajanna Sircilla">Rajanna Sircilla</option>
+                <option value="Ranga Reddy">Ranga Reddy</option>
+                <option value="Sangareddy">Sangareddy</option>
+                <option value="Siddipet">Siddipet</option>
+                <option value="Suryapet">Suryapet</option>
+                <option value="Vikarabad">Vikarabad</option>
+                <option value="Wanaparthy">Wanaparthy</option>
+                <option value="Warangal Rural">Warangal Rural</option>
+                <option value="Warangal Urban">Warangal Urban</option>
+                <option value="Yadadri Bhuvanagiri">Yadadri Bhuvanagiri</option>
+            </select>
+            <input className=" mb-4" placeholder="Search 🔍" onChange={(e)=>{setsearch(e.target.value)}} style={{
+                padding: "8px",
+                outline: "none",
+                width: "50vw",
+                textAlign: "center",
+                fontSize: "1.2rem",
+            }}></input>
+                <Button variant="outlined" color="secondary" className={classes.acceptorButton} onClick={
+                    ()=>{
+                        setrequestfood((pre)=>!pre);
+                    }
+                }>
+                    {(!requestfood)?"Request Food":"Search Requestors"}
+                </Button>
+            {
+                (requestfood) ?
                 <div style={{
                     display: selectedButton.one ? "block" : "none",
                 }}>
@@ -181,14 +214,6 @@ function DonarForm(props) {
                             <div class="invalid-tooltip">
                                 Please Enter your Proper Mobile Number to contact you!
                             </div>
-                        </div>
-                        <div class="form-group m-4">
-                            <label for="food" style={{
-                                fontWeight: "900"
-                            }}>What Food Do you have?</label>
-                            <input type="text" value={details.foodType} onChange={(e) => {
-                                setDetails((pre) => ({ ...pre, foodType: e.target.value }));
-                            }} class="form-control" id="food"></input>
                         </div>
                         <div class="form-group m-4">
                             <label for="address" style={{
@@ -247,15 +272,36 @@ function DonarForm(props) {
                         </div>
                         <button type="submit" class="btn btn-outline-primary" onClick={submitFood}>Submit</button>
                     </form>
+                </div>:
+                <div className="container">
+                    <div class="row p-3">
+                        {fooditems.map((value)=>{
+                            if(value.region===acceptorRegion){
+                                return(
+                                    <div className="col-md-3 rounded-lg mx-auto mb-4 p-3" style={{
+                                        cursor: "pointer",
+                                        backgroundColor: "#4d5249",
+                                        color: "#fff",
+                                        boxShadow:"0 0 2rem 0 #aaa",
+                                        borderRadius:"30px"
+                                    }}>
+                                        <h4 className="mr-auto" style={{
+                                            textAlign: "center",
+                                        }}>
+                                            Requested Person Details:
+                                        </h4>
+                                        {/* <h3><span style={{fontWeight: "900"}}>Name: </span>{value.name}</h3> */}
+                                        <p className="text-center"><span style={{fontWeight: "900"}}>Address: </span>{value.address}</p>
+                                        <p className="text-center"><span style={{fontWeight: "900"}}>Contact:</span> {value.phoneNo}</p>
+                                    </div>
+                                );
+                            }
+                        })}
+                    </div>
                 </div>
-                <div style={{
-                    display: selectedButton.two ? "block" : "none",
-                }}>
-                    <DonarDonations></DonarDonations>
-                </div>
-            </div>
-        </Router>
+            }
+        </div>
     )
 }
 
-export default DonarForm;
+export default RequestFood

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Donors,DonorUser
-from .serializers import DonorsSerializer,DonorUserSerializer
+from .models import Donors,DonorUser,Request
+from .serializers import DonorsSerializer,DonorUserSerializer,RequestUserSerializer
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import DjangoModelPermissions
@@ -35,6 +35,20 @@ class DonorCreate(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [DjangoModelPermissions]
 
+class RequestCreate(viewsets.ModelViewSet):
+    queryset = Request.objects.all()
+    serializer_class = RequestUserSerializer
+
+class ReceiveRequest(viewsets.ModelViewSet):
+    serializer_class = RequestUserSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['address','region']
+    def get_queryset(self):
+        day = datetime.datetime.now()
+        end = day - datetime.timedelta(hours=3)
+        return Request.objects.filter(region=self.kwargs["pk"],day__range=(end,day))
+    pass
+
 class DonorExists(APIView):
     # serializer_class = DonorUserSerializer
     authentication_classes = [TokenAuthentication]
@@ -51,5 +65,7 @@ class ReceiveFood(viewsets.ModelViewSet):
     search_fields = ['foodType','address']
     def get_queryset(self):
         day = datetime.datetime.now().strftime('%Y-%m-%d')
-        return Donors.objects.filter(region=self.kwargs["pk"],day=day)
+        end = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        return Donors.objects.filter(region=self.kwargs["pk"],day__range=(day,))
     pass
+

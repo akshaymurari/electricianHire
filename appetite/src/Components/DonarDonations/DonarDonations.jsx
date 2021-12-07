@@ -77,9 +77,9 @@ function DonarDonations(props) {
             console.log("hiii");
             const data = await axios({
                 method: "get",
-                url: "https://appetite3.herokuapp.com/getdonoritems/"+details.email,
+                url: "http://localhost:8000/getdonoritems/"+details.email,
                 // headers: { "Authorization": "Token adfe0edfc08a10144a7a0ff50177f271bfca3848" },
-                headers:{"Authorization":"Token d27e2be02e4f641be9039972cf59497fbcb0fe9d"},
+                headers:{"Authorization":"Token adfe0edfc08a10144a7a0ff50177f271bfca3848"},
                 data: details,
                 responseType: "json"
             });
@@ -95,8 +95,8 @@ function DonarDonations(props) {
         try{
             const data =  await axios({
                 method:"delete",
-                url:"https://appetite3.herokuapp.com/deletedonoritem/"+id,
-                headers: { "Authorization":"Token d27e2be02e4f641be9039972cf59497fbcb0fe9d"},
+                url:"http://localhost:8000/deletedonoritem/"+id,
+                headers: { "Authorization":"Token adfe0edfc08a10144a7a0ff50177f271bfca3848"},
                 responseType:"json"
             })
             setondel((pre)=>!pre);

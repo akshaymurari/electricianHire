@@ -19,7 +19,7 @@ from appetite import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-# router.register('donorexits',views.DonorExists,basename="donorexits")
+router.register('createrequest',views.RequestCreate,basename="requestcreate")
 router.register('createdonor',views.DonorCreate,basename="createdonor")
 router.register('savedonoritem',views.SaveDonor,basename="savedonor")
 router.register('deletedonoritem',views.SaveDonor,basename="savedonor")
@@ -27,6 +27,7 @@ router.register('deletedonoritem',views.SaveDonor,basename="savedonor")
 urlpatterns = [
     path('',include(router.urls)),
     path('ReceiveFood/<str:pk>',views.ReceiveFood.as_view({'get':'list'})),
+    path('RequestFood/<str:pk>',views.ReceiveRequest.as_view({'get':'list'})),
     path('donorexists/',views.DonorExists.as_view()),
     path('getdonoritems/<str:pk>',views.DonorFoodItems.as_view({'get':'list'})),
     path('admin/', admin.site.urls),

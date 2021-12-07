@@ -63,6 +63,11 @@ function MainLandingPage(props) {
                         Accept Food
                     </Button>
                 </Link>
+                <Link to="/requestfood">
+                    <Button variant="outlined" color="secondary" className={classes.acceptorButton}>
+                        Request Food
+                    </Button>
+                </Link>
             </div>
         </div>
         </>
