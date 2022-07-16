@@ -4,7 +4,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import DonarDonations from '../DonarDonations/DonarDonations.jsx';
+import DonarDonations from '../ElectricianHires/ElectricianHires.jsx';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
